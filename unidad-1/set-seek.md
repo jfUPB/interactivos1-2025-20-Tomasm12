@@ -21,7 +21,16 @@ Por ejemplo:
 ##Actividad 02
 
 ¿Qué es el diseño/arte generativo?  
+El diseño generativo es una forma de crear arte y visuales usando programacion, algoritmos y datos. En lugar de diseñar todo dde forma manual, se crean sistemas que generan resultados visuales de forma automatica, respondiendo a inputs como datos del entorno, comportamiento del usuario o incluso decisiones aleatorias.  
+Este tipo de diseño se trata de combinar creatividad con programación, permitiendo que cada resultado sea único y cambiante. tambine esto no se enfoca solo en hacer algo bonito, si no de hacer una experiencia para los usuarios.  
 
-¿Cómo podrías aplicar lo que has visto en tu perfil profesional? 
+
+¿Cómo podrías aplicar lo que has visto en tu perfil profesional?  
+
+- Crear animaciones que cambian según los datos (que pueda cambiar con el clima, con los sonidos o con movimientos de gente).    
+- Hacer narrativas dinámicas, donde una historia animada cambia dependiendo de elecciones, sonidos, emociones o sensores conectados.  
+- Integrar arte generativo en videojuegos, instalaciones  o VR , haciendo que cada experiencia sea unica.  
+
 ##Actividad 03
+
 ##Actividad 04
