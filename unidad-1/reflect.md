@@ -45,13 +45,13 @@ Me gustó que me mostrara el paso a paso. Sí me dio seguridad y se me hizo más
 
 # Actividad 8  
 
-[Coevaluación compañera]https://github.com/jfUPB/interactivos1-2025-20-VanDiosa/blob/unidad1/apply/unidad-1/apply.md
+[Coevaluación compañera](https://github.com/jfUPB/interactivos1-2025-20-VanDiosa/blob/unidad1/apply/unidad-1/apply.md)
 
 Comparación con el trabajo de mi compañero
 
 Ambos usamos un código muy parecido, pero hay algunas diferencias importantes:
 
-- Mi compañero** agregó `display.show(Image.COW)` en el micro:bit para mostrar una imagen. para verificar si la informacion si esta funcionando
+- Mi compañero agregó `display.show(Image.COW)` en el micro:bit para mostrar una imagen. para verificar si la informacion si esta funcionando
 - También usó un `sleep(100)` que hace que el movimiento del círculo sea más rápido y fluido.
 - Su código está un poco más limpio.
 
