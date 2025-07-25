@@ -43,7 +43,25 @@ Pues, siendo estudiante de Ingeniería en Diseño de Entretenimiento Digital, es
 
 Me gustó que me mostrara el paso a paso. Sí me dio seguridad y se me hizo más fácil entender la actividad.
 
-# Actividad 8
+# Actividad 8  
+
+[Coevaluación compañera]https://github.com/jfUPB/interactivos1-2025-20-VanDiosa/blob/unidad1/apply/unidad-1/apply.md
+
+Comparación con el trabajo de mi compañero
+
+Ambos usamos un código muy parecido, pero hay algunas diferencias importantes:
+
+- Mi compañero** agregó `display.show(Image.COW)` en el micro:bit para mostrar una imagen. para verificar si la informacion si esta funcionando
+- También usó un `sleep(100)` que hace que el movimiento del círculo sea más rápido y fluido.
+- Su código está un poco más limpio.
+
+¿Qué aprendí?
+
+Aprendí que es útil mostrar una imagen en el micro:bit para confirmar que está enviando datos. También que un `sleep` más corto hace que el movimiento sea más suave.
+
+¿Qué hice yo?
+
+Yo controlé el movimiento de un círculo en p5.js usando los botones A y B del micro:bit. Si se presiona A, el círculo va a la izquierda, y si se presiona B, va a la derecha. Mi enfoque fue más simple, sin imagen ni mucha interacción visual en el micro:bit.
 
 # Actividad 9
 
