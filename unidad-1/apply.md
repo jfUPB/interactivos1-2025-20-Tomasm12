@@ -3,7 +3,32 @@
 ## 🛠 Fase: Apply
 
 ## Actividad 05
-Interacción básica con micro:bit
+En esta actividad hicimos un sistema físico interactivo usando p5.js y el editor de micro:bit. La idea fue conectar el micro:bit con la computadora para que, al presionar el botón A, cambie el color de un cuadro en pantalla.
+
+Con el código del micro:bit, se manda una letra por puerto serial:  
+- Si el botón A está presionado, manda una "A".  
+- Si no está presionado, manda una "N" (que se actualiza cada 100 milisegundos (0.1 segundos).
+
+El código en p5.js recibe esa letra y cambia el color del cuadro:
+- Si recibe "A", lo pinta rojo.  
+- Si recibe "N", lo pinta verde.
+
+También se usa un botón en la pantalla para conectar o desconectar el micro:bit. Esto ayuda a saber si el dispositivo está bien conectado. 
+
+### Input 
+
+- Presionar o no el botón A del micro:bit.
+
+###  Proceso
+
+- El micro:bit detecta si el botón está presionado y envía una letra por serial.
+- El programa en p5.js lee esa letra y decide qué color mostrar.
+  
+###  Output 
+
+- El cuadro se vuelve rojo si el botón A está presionado.
+- Se vuelve verde si no lo está.
+
 
 ## Actividad 06
 Control de movimiento con micro:bit  
