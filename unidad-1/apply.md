@@ -36,7 +36,7 @@ Control de movimiento con micro:bit
 [Programa en p5.js](https://editor.p5js.org/Tomasm12/sketches/ZiX_B9kpo)
 
 ### Código de mi programa
-```
+``` js
   let port;
   let connectBtn;
   let connectionInitialized = false;
@@ -89,7 +89,7 @@ Control de movimiento con micro:bit
   }
 ```
 ### Código del micro:bit
-```
+```py
 from microbit import *
 import microbit
 
