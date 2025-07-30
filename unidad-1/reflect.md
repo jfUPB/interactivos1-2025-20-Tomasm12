@@ -50,11 +50,15 @@ Me gustó que me mostrara el paso a paso. Sí me dio seguridad y se me hizo más
 Comparación con el trabajo de mi compañero
 
 Ambos usamos un código muy parecido, pero hay algunas diferencias :
-El código de mi compañera solo controla la posición en X (`posInitX`) con una variable y fija la posición en Y, además de intentar aplicar un color sin efecto. En cambio, mi código usa variables separadas para X e Y, emplea  `ellipseMode(CENTER)` y dibuja un círculo más grande
 
+**p5.js**
+
+El código de mi compañera solo controla la posición en X (`posInitX`) con una variable y fija la posición en Y, además de intentar aplicar un color sin efecto. En cambio, mi código usa variables separadas para X e Y, emplea  `ellipseMode(CENTER)` y dibuja un círculo más grande  
+
+**micro:bit**
 - Mi compañero agregó `display.show(Image.COW)` en el micro:bit para mostrar una imagen. para verificar si la informacion si esta funcionando
 - También usó un `sleep(100)` que hace que el movimiento del círculo sea más rápido y fluido.
-- Su código está un poco más limpio.
+
 de resto fueron bastante similares las soluciones
 
 ¿Qué aprendí?
