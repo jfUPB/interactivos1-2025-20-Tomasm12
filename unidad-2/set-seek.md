@@ -28,7 +28,7 @@ el eventos de temporizador Cuando `utime.ticks_diff()` supera el valor de `inter
 - Cambiar de estado.
   
 ## Actividad 02
-```
+```python
 from microbit import *
 import utime
 
@@ -103,4 +103,5 @@ display.clear(): Apaga los LEDs anteriores.
 display.set_pixel(x, y, 9): Enciende el LED correspondiente al color del semáforo.
 
 utime.ticks_ms() y utime.ticks_diff(): Controlan el tiempo para cambiar de estado.
+
 
