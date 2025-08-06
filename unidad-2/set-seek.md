@@ -142,24 +142,25 @@ Acciones
 
 **Vector 1**: STATE\_HAPPY → STATE\_SMILE (tiempo)
 
-- **Inicio:** `STATE_HAPPY`, `interval = 1500 ms`.
-- **Evento:** sin pulsar botón, pasan 1600 ms.
-- **Esperado/Obtenido:** cambia a `STATE_SMILE`, muestra `SMILE`, actualiza `start_time` y `interval = 1000 ms`. **PASA**
+- Inicio: `STATE_HAPPY`, `interval = 1500 ms`.
+- Evento: sin pulsar botón, pasan 1600 ms.
+- Esperado/Obtenido: cambia a `STATE_SMILE`, muestra `SMILE`, actualiza `start_time` y `interval = 1000 ms`. **PASA**
 
 
 **Vector 2**: STATE\_HAPPY → STATE\_SAD (botón)
 
-- **Inicio:** `STATE_HAPPY`, `interval = 1500 ms`.
-- **Evento:** botón A a los 500 ms.
-- **Esperado/Obtenido:** cambia a `STATE_SAD`, muestra SAD, actualiza `start_time` y `interval = 2000 ms`. **PASA**
+- Inicio: `STATE_HAPPY`, `interval = 1500 ms`.
+- Evento: botón A a los 500 ms.
+- Esperado/Obtenido: cambia a `STATE_SAD`, muestra SAD, actualiza `start_time` y `interval = 2000 ms`. **PASA**
 
 
 
 **Vector 3**: STATE\_SAD → STATE\_HAPPY (tiempo)
 
-- **Inicio:** `STATE_SAD`, `interval = 2000 ms`.
-- **Evento:** sin pulsar botón, pasan 2100 ms.
-- **Esperado/Obtenido:** cambia a `STATE_HAPPY`, muestra HAPPY, actualiza `start_time` y `interval = 1500 ms`. **PASA**
+- Inicio: `STATE_SAD`, `interval = 2000 ms`.
+- Evento: sin pulsar botón, pasan 2100 ms.
+- Esperado/Obtenido: cambia a `STATE_HAPPY`, muestra HAPPY, actualiza `start_time` y `interval = 1500 ms`. **PASA**
 
 No estoy muy seguro si entendi esta parte 3 correcto pero supuse que era hacer algo asi.
+
 
