@@ -107,8 +107,8 @@ Acciones
 
 ## Actividad 03
 
-1. Explica por qué decimos que este programa permite realizar de manera concurrente varias tareas.
-   El programa es concurrente porque en el bucle while True verifica de forma continua dos tareas:
+**1. Explica por qué decimos que este programa permite realizar de manera concurrente varias tareas.
+   El programa es concurrente porque en el bucle while True verifica de forma continua dos tareas:**
 
 - Eventos de usuario `(button_a.was_pressed())`
 
@@ -162,3 +162,4 @@ Acciones
 - **Esperado/Obtenido:** cambia a `STATE_HAPPY`, muestra HAPPY, actualiza `start_time` y `interval = 1500 ms`. **PASA**
 
 No estoy muy seguro si entendi esta parte 3 correcto pero supuse que era hacer algo asi.
+
