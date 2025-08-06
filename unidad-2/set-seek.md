@@ -81,27 +81,28 @@ while True:
 ```
 **Estados**
 
-Rojo: Se muestra el LED rojo encendido.
+- Rojo: Se muestra el LED rojo encendido.
 
-WaitRojo: Espera a que pase el tiempo del estado rojo.
+- WaitRojo: Espera a que pase el tiempo del estado rojo.
 
-Amarillo: Se muestra el LED amarillo encendido.
+- Amarillo: Se muestra el LED amarillo encendido.
 
-WaitAmarillo: Espera a que pase el tiempo del estado amarillo.
+- WaitAmarillo: Espera a que pase el tiempo del estado amarillo.
 
-Verde: Se muestra el LED verde encendido.
+- Verde: Se muestra el LED verde encendido.
 
-WaitVerde: Espera a que pase el tiempo del estado verde.
+- WaitVerde: Espera a que pase el tiempo del estado verde.
 
 **Eventos**
 
-Timeout: Cuando el tiempo definido para cada estado se cumple, se dispara el cambio al siguiente estado.
+- Timeout: Cuando el tiempo definido para cada estado se cumple, se dispara el cambio al siguiente estado.
 
 Acciones
-display.clear(): Apaga los LEDs anteriores.
+- display.clear(): Apaga los LEDs anteriores.
 
-display.set_pixel(x, y, 9): Enciende el LED correspondiente al color del semáforo.
+- display.set_pixel(x, y, 9): Enciende el LED correspondiente al color del semáforo.
 
-utime.ticks_ms() y utime.ticks_diff(): Controlan el tiempo para cambiar de estado.
+- utime.ticks_ms() y utime.ticks_diff(): Controlan el tiempo para cambiar de estado.
 
+## Actividad 03
 
