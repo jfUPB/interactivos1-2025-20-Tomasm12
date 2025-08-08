@@ -25,12 +25,17 @@ Esto evita usar "sleep()", que detiene todo, y permite que el micro:bit pueda �
 
 
 **3. Imagina que tienes que añadir una nueva funcionalidad a la bomba temporizada: si se agita (shake) el micro:bit mientras la cuenta regresiva está activa, el tiempo se reduce a la mitad. ¿Cómo modificarías tu diagrama de máquina de estados para incluir este nuevo evento y acción?**
-
-
+Agregaria 
+- Acciones:
+  - `tiempo = tiempo / 2` (asegurando que sea al menos 1 segundo).
+  - Actualizar el display para mostrar el nuevo tiempo.
+- Diagrama: Se añadió una flecha desde el estado *Armada* que regresa a sí mismo (self-loop) con la etiqueta:  
+  SHAKE a tiempo = tiempo / 2, actualizar display.
 
 **4. Explica qué es un “vector de prueba” y por qué es una herramienta crucial para verificar que una máquina de estados funciona como se espera.**
 Un vector de prueba es una lista de casos con eventos y el resultado esperado.
 Sirve para comprobar que la máquina de estados funciona bien, encontrar errores y asegurarse de que responde bien incluso en situaciones raras.
+
 
 
 
