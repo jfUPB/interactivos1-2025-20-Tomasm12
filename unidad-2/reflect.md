@@ -37,6 +37,14 @@ Un vector de prueba es una lista de casos con eventos y el resultado esperado.
 Sirve para comprobar que la máquina de estados funciona bien, encontrar errores y asegurarse de que responde bien incluso en situaciones raras.
 
 
+## Actividad 08
 
+1. Continuar: ¿Qué actividad, explicación o ejemplo de esta unidad te ayudó más a entender el poder de las máquinas de estados? ¿Qué elemento consideras que es indispensable y debería mantener?
+la avtividad del semaforo fue la que mas me ayudo a entender todo sobre las máquinas de estados
+
+2. Dejar de hacer: ¿Hubo algún paso o actividad que te pareció confuso, innecesariamente complicado o que aportó poco a tu aprendizaje? ¿Qué cambiarías o eliminarías?
+3. Empezar a hacer: ¿Qué te habría ayudado a entender mejor?
+4. Ritmo y dificultad: En una escala del 1 (muy fácil) al 5 (muy difícil), ¿Cómo calificarías la dificultad de pasar del análisis de un programa (Actividad 03) al diseño desde cero de uno complejo (Actividad 04 y 05)? ¿Por qué?
+5. Comentario adicional: ¿Hay algo más que te gustaría compartir sobre tu proceso de aprendizaje en esta unidad? ¿Algún momento de frustración o de “¡Aha!” que quieras destacar?
 
 
