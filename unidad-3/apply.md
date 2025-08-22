@@ -3,6 +3,7 @@
 
 ## 🛠 Fase: Apply
 
+
 ## Actividad 06
 
 ``` python
