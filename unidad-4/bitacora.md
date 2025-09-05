@@ -2,7 +2,7 @@
 
 ## Código
 
-[Enlace a la aplicación a modificar](https://editor.p5js.org/generative-design/full/Bkqe595pkN)
+[Enlace a la aplicación a modificar](https://editor.p5js.org/generative-design/sketches/Bkqe595pkN)
 
 Código a modificar:
 
@@ -73,6 +73,7 @@ function keyReleased() {
   if (keyCode == DELETE || keyCode == BACKSPACE) background(255);
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 }
+
 ```
 
 [Enlace a la aplicación modificada](https://editor.p5js.org/Tomasm12/sketches/G374NZHLK)
@@ -101,7 +102,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   background(255);
   strokeWeight(2);
-  stroke(0,100);
+  stroke(0,25);
   noFill();
 
   port = createSerial();
@@ -120,13 +121,13 @@ function connectBtnClick() {
 }
 
 function updateButtonStates(newAState, newBState) {
-  // Botón A PRESIONADO → dibujar figura
-  if (newAState === true && prevmicroBitAState === false) {
+  // Botón A MANTENIDO → dibujar figura continuamente
+  if (newAState === true) {
     drawShape();
-    print("A presionado → Dibujar figura");
+    print("A mantenido → Dibujando figura");
   }
 
-  // Botón B PRESIONADO → borrar lienzo
+  // Botón B PRESIONADO → borrar lienzo (solo al presionar)
   if (newBState === true && prevmicroBitBState === false) {
     background(255);
     print("B presionado → Borrar lienzo");
@@ -194,10 +195,12 @@ function drawShape() {
   pop();
 }
 
+
 ```
 
 ## Video
 
-[Video demostratativo](URL)
+[Video demostratativo](https://youtu.be/8PJHvC5degc)
+
 
 
