@@ -48,13 +48,14 @@ if (port.availableBytes() > 0) {
   }
 }
 ```
-port.readUntil("\n") → lee lo recibido hasta el salto de línea.
-data.split(",") → separa los valores por comas.
-values[0] y values[1] → son xValue y yValue, convertidos en microBitX y microBitY.
-values[2] y values[3] → son aState y bState, convertidos en valores booleanos.
+
+- port.readUntil("\n") → lee lo recibido hasta el salto de línea.
+- data.split(",") → separa los valores por comas.
+- values[0] y values[1] → son xValue y yValue, convertidos en microBitX y microBitY.
+- values[2] y values[3] → son aState y bState, convertidos en valores booleanos.
 
 4. ¿Cómo se generan los eventos A pressed y B released que se generan en p5.js a partir de los datos que envía el micro:bit?
-
+``` python
 function updateButtonStates(newAState, newBState) {
   if (newAState === true && prevmicroBitAState === false) {
     lineModuleSize = random(50, 160);
@@ -71,3 +72,9 @@ function updateButtonStates(newAState, newBState) {
   prevmicroBitAState = newAState;
   prevmicroBitBState = newBState;
 }
+```
+5. **Capturas de pantalla de los algunos dibujos que hayas hecho con el sketch.**
+
+<img width="878" height="798" alt="image" src="https://github.com/user-attachments/assets/cb85352e-66fa-4f1b-aace-d59087e435e6" />
+<img width="889" height="795" alt="image" src="https://github.com/user-attachments/assets/a67a55e7-071c-4fa8-b2be-69f72ebae212" />
+<img width="884" height="802" alt="image" src="https://github.com/user-attachments/assets/3be19504-fffc-459d-b3c1-5e360c0b4f5c" />
