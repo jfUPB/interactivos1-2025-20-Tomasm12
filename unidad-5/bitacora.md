@@ -106,4 +106,26 @@ La vista en hexadecimal es más difícil de leer que en ASCII porque no se muest
 **¿Qué ventajas y desventajas ves en usar un formato binario en lugar de texto en ASCII?**
 Una ventaja importante del formato binario es que reduce significativamente el tamaño de la información transmitida, lo que lo hace más rápido y eficiente para enviar grandes volúmenes de datos sin tener que convertirlos a texto. Sin embargo, su principal desventaja es la falta de legibilidad directa: los datos no pueden interpretarse fácilmente a simple vista y requieren de herramientas o programas específicos para decodificarlos.
 
+ **Captura el resultado del experimento. ¿Cuántos bytes se están enviando por mensaje? ¿Cómo se relaciona esto con el formato '>2h2B'? ¿Qué significa cada uno de los bytes que se envían?**
 
+<img width="1323" height="684" alt="image" src="https://github.com/user-attachments/assets/4669a88a-340f-4d9d-bd61-c8ab63238a23" />
+
+En cada sacudida se mandan 6 bytes. Esto pasa porque el formato '>2h2B' indica dos números enteros de 16 bits (2 × 2 bytes = 4 bytes) más dos bytes para los botones (2 × 1 byte = 2 bytes). Al sumar todo son 6 bytes. El símbolo > significa que se envían primero los bytes más importantes (big-endian).
+
+Ese formato dice cómo se organizan los datos. Los dos primeros bytes son el valor X del acelerómetro, los dos siguientes el valor Y, y los dos últimos son para saber si el botón A y el botón B estaban presionados (0 = no, 1 = sí). Por eso en la pantalla, cada vez que hay una sacudida aparecen grupos de seis números en hexadecimal.
+
+Los dos primeros bytes son el eje X en binario, los dos siguientes son el eje Y y los dos últimos indican el estado de los botones A y B. Como se usa big-endian, siempre se ve primero el byte alto y luego el bajo en cada número de 16 bits.
+
+**Recuerda de la unidad anterior que es posible enviar números positivos y negativos para los valores de xValue y yValue. ¿Cómo se verían esos números en el formato '>2h2B'?**
+
+En el formato '>2h2B' los valores de xValue y yValue se codifican como enteros con signo de 16 bits en orden big-endian. Esto significa que los números positivos aparecen en hexadecimal tal cual su valor (por ejemplo +100 se vería como 00 64 y +1000 como 03 E8), mientras que los negativos usan la representación estándar de enteros con signo el complemento a dos, que en hex parece un número muy alto pero en realidad corresponde a un valor negativo (por ejemplo −100 como FF 9C o −1000 como FC 18). Al comprender este detalle se vuelve más claro por qué los datos se ven así en la captura.
+
+**Captura el resultado del experimento. ¿Qué diferencias ves entre los datos en ASCII y en binario? ¿Qué ventajas y desventajas ves en usar un formato binario en lugar de texto en ASCII? ¿Qué ventajas y desventajas ves en usar un formato ASCII en lugar de binario?**
+
+<img width="1187" height="561" alt="image" src="https://github.com/user-attachments/assets/c5305577-b6c4-4457-b68a-950a7d73f6eb" />
+
+En la captura se ve que los datos en binario aparecen encerrados entre corchetes [] en forma de bytes (HEX), mientras que justo después se muestran en ASCII ya convertidos en texto comprensible. Básicamente son los mismos valores, pero en dos representaciones distintas: una cruda y compacta y otra legible para las personas.
+
+En binario, la principal ventaja es que cada paquete ocupa muy pocos bytes y por eso resulta más eficiente y rápido cuando se envían muchos datos seguidos. Sin embargo, la desventaja es que no podemos leerlo a simple vista; siempre se necesita un programa o una herramienta que haga la interpretación para nosotros.
+
+En ASCII, por el contrario, la ventaja está en que todo se ve y se entiende directamente sin conversión extra, lo que facilita revisar o depurar los datos. La desventaja es que cada valor ocupa más espacio y la transmisión puede ser más lenta cuando se trabaja con volúmenes grandes de información.
