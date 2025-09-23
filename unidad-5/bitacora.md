@@ -6,7 +6,6 @@
 ### Actividad 01
 
 
-
 1. ¿Describe cómo se están comunicando el micro:bit y el sketch de p5.js? ¿Qué datos envía el micro:bit?  
 
 El micro:bit y p5.js se comunican mediante el **puerto serial** a través del cable USB.  
@@ -129,3 +128,189 @@ En la captura se ve que los datos en binario aparecen encerrados entre corchetes
 En binario, la principal ventaja es que cada paquete ocupa muy pocos bytes y por eso resulta más eficiente y rápido cuando se envían muchos datos seguidos. Sin embargo, la desventaja es que no podemos leerlo a simple vista; siempre se necesita un programa o una herramienta que haga la interpretación para nosotros.
 
 En ASCII, por el contrario, la ventaja está en que todo se ve y se entiende directamente sin conversión extra, lo que facilita revisar o depurar los datos. La desventaja es que cada valor ocupa más espacio y la transmisión puede ser más lenta cuando se trabaja con volúmenes grandes de información.
+
+### Actividad 03
+
+**Explica por qué en la unidad anterior teníamos que enviar la información delimitada y además marcada con un salto de línea y ahora no es necesario.**
+
+los datos enviados en ASCII no tenían siempre la misma longitud. Dependiendo de cuántos dígitos tuviera cada número, el tamaño del mensaje cambiaba y sin un delimitador era difícil para p5.js saber dónde terminaba un conjunto de valores y empezaba el siguiente.
+
+En cambio, ahora estamos usando un formato binario con estructura fija. Cada envío ocupa exactamente 6 bytes (2 para xValue, 2 para yValue y 1 para cada botón), así que p5.js puede leer los datos en bloques de 6 bytes sin confundirse. Por eso ya no hace falta añadir saltos de línea ni otros delimitadores: el tamaño fijo del paquete cumple esa función de manera automática.
+
+**Compara el código de la unidad anterior relacionado con la recepción de los datos seriales que ves ahora. ¿Qué cambios observas?**
+
+En el código anterior, la lectura de los datos se hacía usando port.readUntil("\n") y luego se separaban los valores con split(","). Eso era necesario porque los datos venían en formato ASCII y su longitud variaba según la cantidad de dígitos, por lo que había que usar un delimitador para reconocer dónde terminaba cada paquete.
+
+En cambio, ahora la lectura se hace con port.readBytes(6) y se usa un DataView para interpretar los bytes directamente como enteros o booleanos. Esto es posible porque el formato binario tiene un tamaño fijo (6 bytes) y no hace falta dividir ni convertir texto: p5.js ya sabe exactamente cuántos bytes corresponden a cada valor. El cambio principal es que pasamos de procesar cadenas de texto con delimitadores a leer datos binarios de longitud fija usando posiciones de memoria específicas.
+
+**¿Qué ves en la consola? ¿Por qué crees que se produce este error?**
+aparecen números extraños o muy grandes  y algunas líneas con valores que no deberían estar ahí. Esto indica que en esos momentos p5.js no está leyendo exactamente los 6 bytes que forman un paquete, sino que toma bytes “corridos” o mezclados con el paquete anterior o el siguiente.
+
+Este problema ocurre porque la comunicación serial es continua, los datos llegan uno detrás del otro y no se alinean correctamente. Si el código de p5.js lee en un momento en que no han llegado los 6 bytes completos, o empieza a leer desde el byte equivocado, se pierde la sincronización y los valores se interpretan mal. Por eso aparecen números incoherentes en la consola.
+
+**Analiza el código, observa los cambios. Ejecuta y luego observa la consola. ¿Qué ves?**
+
+Revisando el código se nota que ahora se implementa framing: se añade un byte de inicio y un checksum al final para que p5.js pueda reconocer los paquetes completos y validar que no estén dañados.
+Al ejecutarlo en la consola se ven lecturas ordenadas y coherentes de microBitX, microBitY y los botones, además de mensajes como “Microbit ready to draw” cuando se conecta el micro:bit. También pude ver que, si se simula un error o se reciben datos malos, aparece “Checksum error in packet” y ese paquete se descarta sin romper la lectura.
+Esto confirma que el cambio en el código hace la comunicación más estable y fácil de depurar.
+
+**¿Qué cambios tienen los programas y ¿Qué puedes observar en la consola del editor de p5.js?**
+
+En las versiones finales, del lado del micro:bit ya no se envían solo los 6 bytes de datos, sino que se sumaron dos más: un header al inicio para marcar claramente dónde empieza cada paquete y un checksum al final para comprobar que la información llegó bien. Así cada paquete pasa de 6 a 8 bytes.
+
+En p5.js se incorporó un buffer que acumula los bytes recibidos. Este buffer permite buscar ese header especial para alinear correctamente los datos antes de leerlos y, además, recalcular el checksum para verificar si el paquete es válido o descartarlo si está corrupto.
+
+El checksum se calcula sumando los 6 bytes de datos y tomando el resultado módulo 256; es decir, se obtiene un número entre 0 y 255 que el receptor compara con el valor recibido para confirmar que todo está bien.
+
+En la consola ahora se ven mensajes ordenados: al conectar aparece algo como “Microbit ready to draw” y los valores de X, Y y botones salen estables. Si ocurre un error de transmisión se muestra “Checksum error in packet” indicando que ese paquete se ignoró.
+
+
+### Actividad 04
+**Vas a documentar en tu bitácora todo el proceso de construcción de la aplicación, mostrando las pruebas intermedias que hiciste, los errores que encontraste y cómo los solucionaste.**
+**Vas a realizar múltiples experimentos analizando el comportamiento de la aplicación que construiste. Reporta el proceso de experimentación en la bitácora. Con estas evidencias debes demostrar que has comprendido los conceptos y técnicas vistas en esta unidad.**
+1. 
+Prueba: al mover el micro:bit a la izquierda los dibujos se salían del canvas, aparecían números negativos y los módulos de línea quedaban fuera de la ventana.
+Análisis: noté que estaba tomando directamente los valores del acelerómetro sin centrar, lo que daba valores negativos que se dibujaban fuera del canvas.
+Solución: en readSerialData() sumé windowWidth/2 al X y windowHeight/2 al Y, tal como está ahora:
+<img width="1151" height="879" alt="image" src="https://github.com/user-attachments/assets/47399a76-5c9b-476e-802d-1259a0a2c507" />
+Con esto los valores quedaron centrados y los dibujos se ven dentro del área visible.
+
+2. 
+Prueba: al mover el micro:bit y presionar los botones, la consola de p5.js mostraba constantemente “Checksum error in packet”.
+Análisis: revisando el código vi que estaba incluyendo el byte del header (0xAA) dentro de la suma para calcular el checksum, cuando en el micro:bit sólo se suma la parte de datos.
+<img width="820" height="378" alt="image" src="https://github.com/user-attachments/assets/b715ab44-7ae2-41e7-85e3-cfd0624234c7" />
+Solución: cambié el cálculo en readSerialData() para usar solo dataBytes.reduce(...) % 256. Después de esto los paquetes se procesaron bien y desapareció el mensaje de error.
+
+### Actividad 05
+**En la unidad anterior abordaste la construcción de un protocolo ASCII. En esta unidad realizaste lo propio con un protocolo binario. Realiza una tabla donde compares, según la aplicación que modificaste en la fase de aplicación de ambas unidades, los siguientes aspectos: eficiencia, velocidad, facilidad, usos de recursos. Justifica con ejemplos concretos tomados de las aplicaciones modificadas.**
+
+| Aspecto                         | Protocolo ASCII                                                                  | Protocolo binario                                             | Ejemplo concreto en la aplicación                                                                       |
+| ------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **Eficiencia**                  | Menos eficiente: cada número se envía como caracteres de texto, ocupa más bytes. | Más eficiente: valores se envían directamente en bytes fijos. | Al enviar `xValue=1000`, ASCII envía “1”,“0”,“0”,“0” y coma; binario envía dos bytes.                   |
+| **Velocidad**                   | Más lento: más bytes por paquete y necesidad de conversión texto→número.         | Más rápido: menos bytes y sin parseo de texto.                | La p5.js con ASCII usa `split(",")`; con binario no hay split, se leen bytes directamente.              |
+| **Facilidad de implementación** | Fácil de depurar: legible en monitor serial.                                     | Requiere más cuidado: ilegible y se necesita framing.         | Con ASCII se podía abrir cualquier terminal y ver “1000,200,true,false”.    |
+| **Uso de recursos**             | Más consumo de memoria y CPU en parseo.                                          | Menor uso de memoria y CPU al leer bytes crudos.              | En micro\:bit el `struct.pack()` produce paquete corto (7 u 8 bytes) frente a los \~20 bytes del ASCII. |
+
+**¿Por qué fue necesario introducir framing en el protocolo binario?**
+En ASCII hay separadores como comas y salto de línea \n que indican claramente el final de un paquete.
+En binario cualquier byte puede valer cualquier cosa, no hay separadores naturales, por eso el receptor podría perder sincronización.
+El framing es necesario para marcar de forma explícita el inicio de cada paquete y saber cuántos bytes leer.
+
+**¿Cómo funciona el framing?**
+El transmisor envía:
+
+- Un byte de cabecera especial (por ejemplo 0xAA) para señalar el inicio.
+
+- Una longitud conocida de datos (2 enteros + 2 bytes + checksum = 8 bytes).
+
+- El receptor busca la cabecera y, cuando la encuentra, lee exactamente ese número de bytes para reconstruir el paquete.
+
+**¿Qué es un carácter de sincronización?**
+
+Es el byte especial que permite sincronizar emisor y receptor, marcando el inicio del paquete.
+En este caso es 0xAA (hexadecimal 170).
+
+**¿Qué es el checksum y para qué sirve?**
+
+Es un valor calculado como suma de todos los bytes del paquete módulo 256.
+Sirve para que el receptor compruebe si los datos llegaron íntegros. Si el checksum calculado no coincide con el recibido, se descarta el paquete.
+
+**En la función readSerialData() del programa en p5.js:**
+**¿Qué hace la función concat? ¿Por qué?**
+
+``` javascript
+serialBuffer = serialBuffer.concat(newData);
+```
+La función concat() une dos arreglos sin modificar los originales y devuelve un nuevo arreglo.
+En este caso, se usa para acumular en serialBuffer los nuevos bytes recibidos (newData) desde el puerto serie. Esto es necesario porque los datos pueden llegar en trozos y se deben guardar hasta tener paquetes completos.
+
+
+**En la función readSerialData() tenemos un bucle que recorre el buffer solo si este tiene 8 o más bytes ¿Por qué?**
+
+El bucle se ejecuta únicamente si el serialBuffer tiene al menos 8 bytes porque el protocolo de comunicación define que cada paquete completo mide 8 bytes.
+Si no hay 8 bytes, no se tiene suficiente información para procesar un paquete válido y por lo tanto se espera a que lleguen más datos.
+
+**En el código anterior qué significa 0xaa?**
+
+0xAA es un valor hexadecimal (decimal 170) que se usa como cabecera o carácter de sincronización.
+Permite al receptor identificar el inicio de un paquete.
+
+
+**En el código anterior qué hace la función shift y la instrucción continue? ¿Por qué?**
+``` javascript
+if (serialBuffer[0] !== 0xaa) {
+  serialBuffer.shift();
+  continue;
+}
+```
+shift() elimina y devuelve el primer elemento de un arreglo.
+En este caso, si el primer byte no coincide con 0xaa, se descarta ese byte porque no forma parte de un paquete válido.
+
+continue hace que el bucle pase inmediatamente a la siguiente iteración, sin ejecutar el resto del bloque actual.
+Aquí se usa para que, tras eliminar un byte inválido, el código vuelva a comprobar el siguiente byte del buffer.
+
+Esto es necesario para resincronizar el buffer con el inicio correcto del paquete.
+
+
+**Si hay menos de 8 bytes qué hace la instrucción break? ¿Por qué?**
+```
+if (serialBuffer.length < 8) break;
+```
+break sale del bucle while. Se hace porque no hay suficientes bytes para armar un paquete completo y se debe esperar a que lleguen más datos en la próxima ejecución de readSerialData().
+
+
+**¿Cuál es la diferencia entre slice y splice? ¿Por qué se usa splice justo después de slice?**
+
+``` javascript
+let packet = serialBuffer.slice(0, 8);
+serialBuffer.splice(0, 8);
+```
+- slice(0,8) crea una copia de los primeros 8 bytes sin modificarlos.
+
+- splice(0,8) elimina esos 8 bytes del array original.
+
+Primero se extrae el paquete para procesarlo y luego se eliminan esos bytes del buffer para no procesarlos de nuevo.
+
+A la siguiente parte del código se le conoce como programación funcional ¿Cómo opera la función reduce?
+``` javascript
+    let computedChecksum = dataBytes.reduce((acc, val) => acc + val, 0) % 256;
+```
+
+reduce aplica una función acumuladora a cada elemento del array.
+Aquí suma todos los bytes del paquete empezando en 0, y al final se toma módulo 256 para calcular el checksum.
+
+**¿Por qué se compara el checksum enviado con el calculado? ¿Para qué sirve esto?**
+``` javascript
+if (computedChecksum !== receivedChecksum) {
+    console.log("Checksum error in packet");
+    continue;
+}
+```
+Se compara para verificar la integridad del paquete.
+Si no coinciden, significa que los datos llegaron corruptos o incompletos y se descartan con continue para no usar valores erróneos.
+
+**En el código anterior qué hace la instrucción continue? ¿Por qué?**
+
+Hace que el bucle while salte directamente a la siguiente iteración, ignorando el resto del código de esa vuelta.
+Esto permite descartar el paquete con error y seguir procesando el siguiente sin detener el programa.
+
+**¿Qué es un DataView? ¿Para qué se usa?**
+``` javascript
+let buffer = new Uint8Array(dataBytes).buffer;
+let view = new DataView(buffer);
+```
+
+DataView es un objeto que permite interpretar bytes crudos de un ArrayBuffer en distintos formatos (enteros de 8, 16, 32 bits, con o sin signo, y con distintos órdenes de bytes).
+Se usa para reconstruir correctamente los valores enviados desde el micro:bit.
+
+**¿Por qué es necesario hacer estas conversiones y no simplemente se toman tal cual los datos del buffer?**
+``` javascript
+    microBitX = view.getInt16(0) + windowWidth / 2;
+    microBitY = view.getInt16(2) + windowHeight / 2;
+    microBitAState = view.getUint8(4) === 1;
+    microBitBState = view.getUint8(5) === 1;
+```
+
+Porque los datos binarios pueden ocupar más de un byte y tener diferente endianness.
+Si se leen como bytes individuales, los valores serían incorrectos.
+Con DataView se pueden leer los dos primeros bytes como un entero de 16 bits con signo (X), los siguientes dos como entero de 16 bits con signo (Y), y los bytes individuales como enteros sin signo (botones). Esto garantiza que los valores sean exactamente los enviados.
