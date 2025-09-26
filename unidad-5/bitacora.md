@@ -349,13 +349,14 @@ Con DataView se pueden leer los dos primeros bytes como un entero de 16 bits con
 | Criterio                               | Nivel / Nota | Justificación                                                                                                                                                                                                                                                                                                        |
 |----------------------------------------|--------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | 1. Profundidad de la Indagación         | **Excelente – 4.6** | Quise entender por qué y para qué se hacía cada paso. Y cunaod no entendia buscaba de que forema hacerlo o que otras formas habia para relizar esa actividad de forma correcta   |
-| 2. Calidad de la Experimentación        | **En Desarrollo – 4.0** | Realicé varios experimentos para verificar que mi implementación del protocolo binario funcionara . Sin embargo, reconozco que me faltó documentar más a fondo cada paso y aislar mejor los errores antes de corregirlos. En esta parte me centré más en lograr que funcionara que en diseñar pruebas muy sistemáticas. |
+| 2. Calidad de la Experimentación        | **En Desarrollo – 5** | Realicé varios experimentos para verificar que mi implementación del protocolo binario funcionara . Sin embargo, reconozco que me faltó documentar más a fondo cada paso y aislar mejor los errores antes de corregirlos. En esta parte me centré más en lograr que funcionara que en diseñar pruebas muy sistemáticas. |
 | 3. Análisis y Reflexión                 | **Excelente – 4.6** | No me limité a describir resultados; traté de entender las causas. y profundizar en cada uno de ellos paar tener claor los temas|
 | 4. Apropiación y Articulación de Conceptos | **Excelente – 4.8** | Fui capaz de explicar con mis propias palabras conceptos como *header*, *checksum*, `DataView` y `struct.pack` en MicroPython. Creo que ya me desenvuelvo mejor en estos temas|
 
 
 
-Nota: 4.5
+Nota: 4.75
+
 
 
 
