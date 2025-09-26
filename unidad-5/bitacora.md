@@ -168,6 +168,7 @@ En la consola ahora se ven mensajes ordenados: al conectar aparece algo como “
 ### Actividad 04
 **Vas a documentar en tu bitácora todo el proceso de construcción de la aplicación, mostrando las pruebas intermedias que hiciste, los errores que encontraste y cómo los solucionaste.**
 **Vas a realizar múltiples experimentos analizando el comportamiento de la aplicación que construiste. Reporta el proceso de experimentación en la bitácora. Con estas evidencias debes demostrar que has comprendido los conceptos y técnicas vistas en esta unidad.**
+
 1. 
 Prueba: al mover el micro:bit a la izquierda los dibujos se salían del canvas, aparecían números negativos y los módulos de línea quedaban fuera de la ventana.
 Análisis: noté que estaba tomando directamente los valores del acelerómetro sin centrar, lo que daba valores negativos que se dibujaban fuera del canvas.
@@ -327,3 +328,4 @@ Con DataView se pueden leer los dos primeros bytes como un entero de 16 bits con
 
 
 Nota: 4.5
+
