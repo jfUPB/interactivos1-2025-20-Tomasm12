@@ -169,18 +169,47 @@ En la consola ahora se ven mensajes ordenados: al conectar aparece algo como “
 **Vas a documentar en tu bitácora todo el proceso de construcción de la aplicación, mostrando las pruebas intermedias que hiciste, los errores que encontraste y cómo los solucionaste.**
 **Vas a realizar múltiples experimentos analizando el comportamiento de la aplicación que construiste. Reporta el proceso de experimentación en la bitácora. Con estas evidencias debes demostrar que has comprendido los conceptos y técnicas vistas en esta unidad.**
 
-1. 
-Prueba: al mover el micro:bit a la izquierda los dibujos se salían del canvas, aparecían números negativos y los módulos de línea quedaban fuera de la ventana.
-Análisis: noté que estaba tomando directamente los valores del acelerómetro sin centrar, lo que daba valores negativos que se dibujaban fuera del canvas.
-Solución: en readSerialData() sumé windowWidth/2 al X y windowHeight/2 al Y, tal como está ahora:
-<img width="1151" height="879" alt="image" src="https://github.com/user-attachments/assets/47399a76-5c9b-476e-802d-1259a0a2c507" />
-Con esto los valores quedaron centrados y los dibujos se ven dentro del área visible.
 
-2. 
-Prueba: al mover el micro:bit y presionar los botones, la consola de p5.js mostraba constantemente “Checksum error in packet”.
-Análisis: revisando el código vi que estaba incluyendo el byte del header (0xAA) dentro de la suma para calcular el checksum, cuando en el micro:bit sólo se suma la parte de datos.
-<img width="820" height="378" alt="image" src="https://github.com/user-attachments/assets/b715ab44-7ae2-41e7-85e3-cfd0624234c7" />
-Solución: cambié el cálculo en readSerialData() para usar solo dataBytes.reduce(...) % 256. Después de esto los paquetes se procesaron bien y desapareció el mensaje de error.
+
+1. Conexión p5.js y lectura inicial (ASCII)
+
+Se partió del código anterior que leía port.readUntil("\n") con split(",").
+
+Prueba: conectar micro:bit.
+Resultado: no llegaban datos legibles (porque ahora no hay saltos de línea ni texto).
+Solución: cambiar la lógica a lectura de bytes (port.read() y buffers).
+<img width="891" height="108" alt="image" src="https://github.com/user-attachments/assets/f1bc7ae8-32e7-45da-bdf3-40836dfb66b0" />
+
+2. Implementación de lectura binaria
+
+Se implementó un buffer que busca el byte de inicio 0xAA.
+
+Al detectar 0xAA, se esperan los 7 bytes siguientes (2h2B + checksum).
+
+Se calculó el checksum y se descartaron paquetes inválidos.
+
+Prueba intermedia: imprimir en consola los valores X,Y,A,B.
+Resultado: valores numéricos correctos (-1024 a 1024).
+
+3 Integración con dibujo
+
+Se mapeó microBitY → número de lados (3 a 12).
+
+Se mapeó microBitX → radio (20 a 200).
+
+Botón A mantenido → dibujar polígono.
+
+Botón B presionado → limpiar lienzo.
+
+Prueba: mover micro:bit y presionar botones.
+Resultado: figura se dibuja, el radio y los lados cambian.
+
+4. Ajuste de opacidad
+
+Se agregó opacidad a la línea:
+
+stroke(0, 50); // 50/255 ≈ 20% opaco
+<img width="743" height="337" alt="image" src="https://github.com/user-attachments/assets/d371c236-29d0-4595-9758-da5664e5feba" />
 
 ### Actividad 05
 **En la unidad anterior abordaste la construcción de un protocolo ASCII. En esta unidad realizaste lo propio con un protocolo binario. Realiza una tabla donde compares, según la aplicación que modificaste en la fase de aplicación de ambas unidades, los siguientes aspectos: eficiencia, velocidad, facilidad, usos de recursos. Justifica con ejemplos concretos tomados de las aplicaciones modificadas.**
@@ -328,4 +357,5 @@ Con DataView se pueden leer los dos primeros bytes como un entero de 16 bits con
 
 
 Nota: 4.5
+
 
