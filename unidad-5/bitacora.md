@@ -1,8 +1,6 @@
 
 # Evidencias de la unidad 5
 
-# Evidencias de la unidad 5
-
 ### Actividad 01
 
 
@@ -169,7 +167,7 @@ En la consola ahora se ven mensajes ordenados: al conectar aparece algo como “
 **Vas a documentar en tu bitácora todo el proceso de construcción de la aplicación, mostrando las pruebas intermedias que hiciste, los errores que encontraste y cómo los solucionaste.**
 **Vas a realizar múltiples experimentos analizando el comportamiento de la aplicación que construiste. Reporta el proceso de experimentación en la bitácora. Con estas evidencias debes demostrar que has comprendido los conceptos y técnicas vistas en esta unidad.**
 
-
+[Programa funcional](https://editor.p5js.org/Tomasm12/full/_CvDumbL3)
 
 1. Conexión p5.js y lectura inicial (ASCII)
 
@@ -208,7 +206,8 @@ Resultado: figura se dibuja, el radio y los lados cambian.
 
 Se agregó opacidad a la línea:
 
-stroke(0, 50); // 50/255 ≈ 20% opaco
+stroke(0, 50); 
+
 <img width="743" height="337" alt="image" src="https://github.com/user-attachments/assets/d371c236-29d0-4595-9758-da5664e5feba" />
 
 ### Actividad 05
@@ -357,5 +356,6 @@ Con DataView se pueden leer los dos primeros bytes como un entero de 16 bits con
 
 
 Nota: 4.5
+
 
 
