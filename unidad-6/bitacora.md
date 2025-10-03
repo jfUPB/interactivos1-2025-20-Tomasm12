@@ -221,7 +221,435 @@ Ninguno de los 2 funciona
 
 **¿Qué aprendiste sobre la variable port y la función listen? Restaura el puerto a 3000.**
 
+Aprendí que la variable port define el número de puerto en el que el servidor escucha las conexiones, y la función listen se encarga de iniciarlo en ese puerto. Si intento entrar con otro puerto diferente al configurado, la conexión falla porque no hay ningún servidor atendiendo ahí.
 
 ### Actividad 04
 
+**Abre page2.html en tu navegador (con el servidor corriendo).**
 
+**Abre la consola de desarrollador (F12).**
+
+<img width="1254" height="366" alt="image" src="https://github.com/user-attachments/assets/e605b4a5-270b-441d-a2ab-5b55e051d795" />
+
+**Detén el servidor Node.js (Ctrl+C).**
+
+<img width="1242" height="541" alt="image" src="https://github.com/user-attachments/assets/80619a0f-d749-40ae-ab7c-6fc9065e6867" />
+
+**Refresca la página page2.html. Observa la consola del navegador. ¿Ves algún error relacionado con la conexión? ¿Qué indica?**
+
+
+<img width="1268" height="753" alt="image" src="https://github.com/user-attachments/assets/62a8f9d3-f60d-4c4d-9d16-506f06cd6ff2" />
+
+me sale que no se puede acceder al sitio 
+
+Vuelve a iniciar el servidor y refresca la página. ¿Desaparecen los errores?
+
+
+<img width="1266" height="486" alt="image" src="https://github.com/user-attachments/assets/c03cb669-5691-44d3-a9cf-e132a6c26521" />
+
+si el error desaparece y digue funcionando de forma normal 
+
+
+
+**Comenta la línea socket.emit(‘win2update’, currentPageData, socket.id); dentro del listener connect.**
+
+<img width="644" height="296" alt="image" src="https://github.com/user-attachments/assets/6eff0cdd-5078-472d-8454-ebb40971db54" />
+
+**Reinicia el servidor y refresca page1.html y page2.html.**
+
+<img width="731" height="145" alt="image" src="https://github.com/user-attachments/assets/03677058-d3dc-41a3-acef-1c8b9b44c4cd" />
+
+**Mueve la ventana de page2 un poco para que envíe una actualización.**
+
+<img width="2241" height="1071" alt="image" src="https://github.com/user-attachments/assets/f5c5f2ea-58de-437f-b53e-1996fcf2b4b9" />
+
+<img width="1159" height="960" alt="image" src="https://github.com/user-attachments/assets/a84ae6eb-57c9-4d6e-bb4d-29cf39a50685" />
+
+**¿Qué pasó? ¿Por qué?**
+
+Al reiniciar el servidor, page1 y page2 se sincronizaron al inicio (se mostraban unidos por la línea). Pero al mover page2, sus cambios no llegaron a page1, así que dejaron de estar sincronizados. Al comentar la línea socket.emit(...) en checkWindowPosition(), page2 solo envió su posición inicial en setup, pero ya no pudo actualizar en tiempo real.
+
+
+**Mueve la ventana de page1. Observa la consola del navegador de page2. ¿Qué datos muestra?**
+
+
+<img width="1077" height="923" alt="image" src="https://github.com/user-attachments/assets/2fe71b47-7f08-404b-9339-c9d2f9ef8850" />
+
+salen varios mensajes diciendo que recibio datos validos  y que esta "synced"
+
+Mueve la ventana de page2. Observa la consola de page1. ¿Qué pasa? ¿Por qué?
+
+<img width="1092" height="987" alt="image" src="https://github.com/user-attachments/assets/fa2ce9c5-bcd2-4396-832e-f9691a297c18" />
+
+En la consola de page1 aparecen mensajes que corresponden a las coordenadas de page2. Esto sucede porque cada ventana, cuando detecta un cambio en su posición, genera un evento propio (win1update o win2update) que es enviado al servidor. El servidor, a su vez, redistribuye esa información a la otra ventana, que la recibe y la imprime en su consola.
+
+De esta manera, ambas páginas permanecen en constante sincronización, ya que cada una conoce en tiempo real la ubicación de la otra gracias al intercambio de eventos a través del servidor.
+
+
+
+
+**Observa checkWindowPosition() en page2.js y modifica el código del if para comprobar si el código dentreo de este se ejecuta.**
+
+<img width="542" height="325" alt="image" src="https://github.com/user-attachments/assets/3ffc9cae-a546-4076-8a05-f2cd20affe18" />
+
+**Mueve cada ventana y observa las consolas.**
+
+<img width="1014" height="996" alt="image" src="https://github.com/user-attachments/assets/4185c106-44fc-4682-8383-fe6d551f862f" />
+
+**¿Qué puedes concluir y por qué?**
+
+Al modificar el if en checkWindowPosition() de page2.js y mover las ventanas, se comprobó que el código dentro del if se ejecuta cada vez que cambia la posición o tamaño de la ventana. Además, cada página recibe correctamente los datos enviados por la otra, lo que demuestra que la sincronización es bidireccional y funciona en tiempo real.
+
+
+**Cambia el background(220) para que dependa de la distancia entre las ventanas. Puedes calcular la magnitud del resultingVector usando let distancia = resultingVector.mag(); y luego usa map() para convertir esa distancia a un valor de gris o color. background(map(distancia, 0, 1000, 255, 0)); (ajusta el rango 0-1000 según sea necesario).**
+
+<img width="2223" height="1032" alt="image" src="https://github.com/user-attachments/assets/a79a3d90-8344-47dc-b41b-591b166dce1b" />
+
+``` java
+function draw() {
+    // Crear los vectores de posición
+    let vector2 = createVector(remotePageData.x, remotePageData.y);
+    let vector1 = createVector(currentPageData.x, currentPageData.y);
+    let resultingVector = createVector(vector2.x - vector1.x, vector2.y - vector1.y);
+
+    // Calcular la distancia entre ventanas
+    let distancia = resultingVector.mag();
+
+    // Mapear la distancia a un rango de color (0-1000 px → gris 255-0)
+    let bgColor = map(distancia, 0, 1000, 255, 0); 
+    background(bgColor);
+
+    if (!isConnected) {
+        showStatus('Conectando al servidor...', color(255, 165, 0));
+        return;
+    }
+    
+    if (!hasRemoteData) {
+        showStatus('Esperando conexión de la otra ventana...', color(255, 165, 0));
+        return;
+    }
+    
+    if (!isFullySynced) {
+        showStatus('Sincronizando datos...', color(255, 165, 0));
+        return;
+    }
+
+    // Solo dibujar cuando esté completamente sincronizado
+    drawCircle(point2[0], point2[1]);
+    checkWindowPosition();
+
+    stroke(50);
+    strokeWeight(20);
+    drawCircle(resultingVector.x + remotePageData.width / 2, resultingVector.y + remotePageData.height / 2);
+    line(point2[0], point2[1], resultingVector.x + remotePageData.width / 2, resultingVector.y + remotePageData.height / 2);
+}
+
+```
+**Inventa otra modificación creativa.**
+
+<img width="2199" height="810" alt="image" src="https://github.com/user-attachments/assets/30b3b5fe-3433-4b17-b6ef-e6f3fcc4561a" />
+<img width="689" height="708" alt="image" src="https://github.com/user-attachments/assets/d48c9f40-469b-4180-a569-e206b0a88ded" />
+
+
+``` java
+function draw() {
+    // Crear los vectores de posición
+    let vector2 = createVector(remotePageData.x, remotePageData.y);
+    let vector1 = createVector(currentPageData.x, currentPageData.y);
+    let resultingVector = createVector(vector2.x - vector1.x, vector2.y - vector1.y);
+
+    // Calcular la distancia entre ventanas
+    let distancia = resultingVector.mag();
+
+    // Mapear la distancia a un rango de gris para el fondo
+    let bgColor = map(distancia, 0, 1000, 255, 0); 
+    background(bgColor);
+
+    // Mapear la distancia al tamaño de los círculos (mín 50px, máx 200px)
+    let circleSize = map(distancia, 0, 1000, 200, 50);
+
+    if (!isConnected) {
+        showStatus('Conectando al servidor...', color(255, 165, 0));
+        return;
+    }
+    
+    if (!hasRemoteData) {
+        showStatus('Esperando conexión de la otra ventana...', color(255, 165, 0));
+        return;
+    }
+    
+    if (!isFullySynced) {
+        showStatus('Sincronizando datos...', color(255, 165, 0));
+        return;
+    }
+
+    // Solo dibujar cuando esté completamente sincronizado
+    drawCircle(point2[0], point2[1], circleSize);
+    checkWindowPosition();
+
+    stroke(50);
+    strokeWeight(20);
+    drawCircle(resultingVector.x + remotePageData.width / 2, resultingVector.y + remotePageData.height / 2, circleSize);
+    line(point2[0], point2[1], resultingVector.x + remotePageData.width / 2, resultingVector.y + remotePageData.height / 2);
+}
+
+function drawCircle(x, y, size = 150) {
+    fill(255, 0, 0);
+    ellipse(x, y, size, size);
+}
+
+```
+
+### Actividad 05
+Explica tu idea y realiza algunos bocetos.
+
+Idea: introvertido 
+cunaod un amigo ser aserca uno inicia a usar su bateria peronal pero entre mas serca esta bateria mas se gasta 
+- un circulo se asercara a otro y este cambiara de color, y entre mas serca cambiara a un color mas oscuro, ademas el ecenario cambiara tambien de tonalidad para mostrar el desgaste de la perona 
+Implementa tu idea.
+
+Incluye todos los códigos (servidor y clientes) en tu bitácora.
+``` java
+// Variables para animación del círculo remoto
+let remoteSize = 150;
+let remoteBrightness = 255;
+let isRetreating = false;
+```
+
+``` java
+if (distancia < 300) {
+    background(0); // pantalla negra si se acercan
+    remoteSize = map(distancia, 0, 300, 50, 150);
+    ...
+} else {
+    background(map(distancia, 0, 1000, 255, 50)); 
+}
+
+```
+
+``` java
+if (!isRetreating && distancia < 100) {
+    isRetreating = true;
+    remoteBrightness = 150; // menos brillante
+    setTimeout(() => {
+        remoteBrightness = 255; // vuelve brillante
+        remoteSize = 200;       // crece más
+        setTimeout(() => {
+            remoteSize = 150;   // regresa normal
+            isRetreating = false;
+        }, 1500);
+    }, 1500);
+}
+
+
+```
+
+``` java 
+function drawCircle(x, y, c, s) {
+    fill(c);
+    noStroke();
+    ellipse(x, y, s, s);
+}
+
+```
+``` java 
+let currentPageData = {
+    x: window.screenX,
+    y: window.screenY,
+    width: window.innerWidth,
+    height: window.innerHeight
+}
+
+let previousPageData = { ...currentPageData };
+let remotePageData = { x: 0, y: 0, width: 100, height: 100 };
+let point2 = [currentPageData.width / 2, currentPageData.height / 2];
+let socket;
+let isConnected = false;
+let hasRemoteData = false;
+let isFullySynced = false;
+
+// Variables para animación del círculo remoto
+let remoteSize = 150;
+let remoteBrightness = 255;
+let isRetreating = false;
+
+function setup() {
+    createCanvas(windowWidth, windowHeight);
+    frameRate(60);
+    socket = io();
+
+    socket.on('connect', () => {
+        console.log('Connected with ID:', socket.id);
+        isConnected = true;
+        socket.emit('win2update', currentPageData, socket.id);
+        setTimeout(() => { socket.emit('requestSync'); }, 500);
+    });
+
+    socket.on('getdata', (response) => {
+        if (response && response.data && isValidRemoteData(response.data)) {
+            remotePageData = response.data;
+            hasRemoteData = true;
+            console.log('Received valid remote data:', remotePageData);
+            socket.emit('confirmSync');
+        }
+    });
+
+    socket.on('fullySynced', (synced) => {
+        isFullySynced = synced;
+        console.log('Sync status:', synced ? 'SYNCED' : 'NOT SYNCED');
+    });
+
+    socket.on('peerDisconnected', () => {
+        hasRemoteData = false;
+        isFullySynced = false;
+        console.log('Peer disconnected');
+    });
+
+    socket.on('disconnect', () => {
+        isConnected = false;
+        hasRemoteData = false;
+        isFullySynced = false;
+        console.log('Disconnected from server');
+    });
+}
+
+function isValidRemoteData(data) {
+    return data && 
+           typeof data.x === 'number' && 
+           typeof data.y === 'number' && 
+           typeof data.width === 'number' && data.width > 0 &&
+           typeof data.height === 'number' && data.height > 0;
+}
+
+function checkWindowPosition() {
+    currentPageData = {
+        x: window.screenX,
+        y: window.screenY,
+        width: window.innerWidth,
+        height: window.innerHeight
+    };
+
+    if (currentPageData.x !== previousPageData.x || currentPageData.y !== previousPageData.y || 
+        currentPageData.width !== previousPageData.width || currentPageData.height !== previousPageData.height) {
+
+        point2 = [currentPageData.width / 2, currentPageData.height / 2]
+        socket.emit('win2update', currentPageData, socket.id);
+        previousPageData = currentPageData; 
+    }
+}
+
+function draw() {
+    if (!isConnected) {
+        background(50);
+        showStatus('Conectando al servidor...', color(255, 165, 0));
+        return;
+    }
+    
+    if (!hasRemoteData) {
+        background(50);
+        showStatus('Esperando conexión...', color(255, 165, 0));
+        return;
+    }
+    
+    if (!isFullySynced) {
+        background(50);
+        showStatus('Sincronizando...', color(255, 165, 0));
+        return;
+    }
+
+    checkWindowPosition();
+
+    let vector2 = createVector(remotePageData.x, remotePageData.y);
+    let vector1 = createVector(currentPageData.x, currentPageData.y);
+    let resultingVector = createVector(vector2.x - vector1.x, vector2.y - vector1.y);
+    let distancia = resultingVector.mag();
+
+    // ----- REACCIONES -----
+    if (distancia < 300) {
+        // 1. Pantalla negra
+        background(0);
+
+        // 2. Reducir tamaño del círculo remoto al acercarse
+        remoteSize = map(distancia, 0, 300, 50, 150);
+
+        // 3. Si están muy cerca, activar "retirada y regreso brillante"
+        if (!isRetreating && distancia < 100) {
+            isRetreating = true;
+            remoteBrightness = 150; // se vuelve menos brillante
+            setTimeout(() => {
+                remoteBrightness = 255; // vuelve brillante
+                remoteSize = 200;       // crece más
+                setTimeout(() => {
+                    remoteSize = 150;   // regresa a tamaño normal
+                    isRetreating = false;
+                }, 1500);
+            }, 1500);
+        }
+    } else {
+        // Fondo normal con efecto de distancia
+        background(map(distancia, 0, 1000, 255, 50));
+        remoteSize = 150;
+        remoteBrightness = 255;
+    }
+
+    // Dibujar Page 1 (círculo rojo fijo en el centro local)
+    drawCircle(point2[0], point2[1], color(255, 0, 0), 150);
+
+    // Dibujar Page 2 (círculo verde dinámico)
+    drawCircle(resultingVector.x + remotePageData.width / 2,
+               resultingVector.y + remotePageData.height / 2,
+               color(0, remoteBrightness, 0),
+               remoteSize);
+
+    // Línea de conexión
+    stroke(100);
+    strokeWeight(4);
+    line(point2[0], point2[1],
+         resultingVector.x + remotePageData.width / 2,
+         resultingVector.y + remotePageData.height / 2);
+}
+
+function showStatus(message, statusColor) {
+    textSize(24);
+    textAlign(CENTER, CENTER);
+    noStroke();
+    fill(0, 0, 0, 150);
+    rectMode(CENTER);
+    let textW = textWidth(message) + 40;
+    let textH = 40;
+    rect(width / 2, 1*height / 6, textW, textH, 10);
+    fill(statusColor);
+    text(message, width / 2, 1*height / 6);
+}
+
+function drawCircle(x, y, c, s) {
+    fill(c);
+    noStroke();
+    ellipse(x, y, s, s);
+}
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+}
+
+```
+
+<img width="1060" height="683" alt="image" src="https://github.com/user-attachments/assets/92accc39-ed82-4b91-b85c-e137488118a1" />
+
+<img width="1052" height="931" alt="image" src="https://github.com/user-attachments/assets/c99546b3-05ae-41a3-97d3-323153d6cd70" />
+
+
+
+
+
+### Autoevaluación
+
+
+| Competencia                                                                                           | Nota | Justificación                                                                                           |
+|-------------------------------------------------------------------------------------------------------|------|---------------------------------------------------------------------------------------------------------|
+| Configurarás y ejecutarás un servidor básico usando Node.js, Express y Socket.IO.                     | 5    | Lograste configurar y levantar el servidor sin errores, comprendiendo bien la estructura básica.        |
+| Implementarás una comunicación en tiempo real entre dos sketches de p5.js utilizando Socket.IO.       | 5    | La comunicación en tiempo real funcionó correctamente y se integró de forma estable entre las ventanas. |
+| Analizarás la arquitectura cliente-servidor y el flujo de datos en una aplicación web en tiempo real. | 5  | El análisis fue sólido, y logre entender el flujode datos.         |
+| Crearás una nueva aplicación interactiva que utilice comunicación en red.                             | 4.5    | La aplicación tiene algunos problemas pero es funcional .     |
+
+**Nota:** 4.8
