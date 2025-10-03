@@ -128,3 +128,100 @@ Por qué es útil usar JS en cliente y servidor: Porque los desarrolladores pued
 La diferencia principal entre la comunicación tradicional con HTTP y la que se hace con WebSockets es que HTTP funciona como un intercambio de cartas: el navegador pide algo y el servidor responde, y para cada nueva acción hay que repetir ese ciclo. En cambio, con WebSockets se abre una especie de “línea telefónica” que queda siempre activa entre el cliente y el servidor, lo que permite que ambos se envíen información en tiempo real sin necesidad de hacer nuevas peticiones. Socket.IO facilita mucho este proceso, ya que ofrece funciones sencillas para enviar y recibir mensajes. Este tipo de comunicación se utiliza en aplicaciones donde la rapidez es clave, como los chats en línea, los videojuegos multijugador o las herramientas colaborativas como Google Docs, donde necesitas ver de inmediato lo que hacen otras personas.
 
 ### Actividad 03
+
+**Detén el servidor si está corriendo.
+Cambia la primera ruta de /page1 a /pagina_uno.
+Inicia el servidor.**
+
+<img width="586" height="239" alt="image" src="https://github.com/user-attachments/assets/395b5684-d793-463e-983d-8479f2a82f7d" />
+
+**Intenta acceder a http://localhost:3000/page1. ¿Funciona?**
+
+al intentar iniciar con http://localhost:3000/page1 no funciona
+
+
+**Ahora intenta acceder a http://localhost:3000/pagina_uno. ¿Funciona?**
+
+ahora con http://localhost:3000/pagina_uno si funciona 
+
+<img width="2064" height="989" alt="image" src="https://github.com/user-attachments/assets/533f85e7-36d5-4462-8c05-8f40b39a5540" />
+
+**¿Qué te dice esto sobre cómo el servidor asocia URLs con respuestas? Restaura el código.**
+
+El servidor solo puede responder a las direcciones que han sido definidas en su código. Si en el navegador se escribe una URL distinta a la programada, como /page1 en lugar de /pagina_uno, no encuentra coincidencia y devuelve un error. Esto muestra que la relación entre las URLs y las respuestas no es automática, sino que depende de las rutas que el programador haya configurado explícitamente en el servidor.
+
+
+
+**Abre http://localhost:3000/page1 en una pestaña. Observa la terminal del servidor. ¿Qué mensaje ves? Anota el ID.**
+
+<img width="722" height="130" alt="image" src="https://github.com/user-attachments/assets/f9e14320-9fd1-4fa9-96fd-8aa1544aa93e" />
+
+A user connected - ID: nZvG7JkxLh0X4n_8AAAB
+
+En la terminal aparece un mensaje indicando que un usuario se conectó junto con un ID único. Ese ID sirve para identificar a cada cliente que entra al servidor.
+
+**Abre http://localhost:3000/page2 en OTRA pestaña. Observa la terminal. ¿Qué mensaje ves? ¿El ID es diferente?**
+
+<img width="689" height="93" alt="image" src="https://github.com/user-attachments/assets/a987b65d-9b00-4119-b5f7-d29f9cc34776" />
+
+A user connected - ID: 0VgDVIOUbYXoRRQKAAAD
+la terminal muestra que el servidor está activo y que un usuario se conectó con un ID único. También indica que la conexión proviene de la página 2 y registra los datos de esa ventana.
+
+Si el ID  es diferente al que salio con page 1
+
+
+**Cierra la pestaña de page1. Observa la terminal. ¿Qué mensaje ves? ¿Coincide el ID con el que anotaste?**
+
+<img width="483" height="69" alt="image" src="https://github.com/user-attachments/assets/8ccca9d4-49fd-4a69-a67e-8e5498ebec6d" />
+
+User disconnected - ID: nZvG7JkxLh0X4n_8AAAB
+sale un mensaje que el usuario se desconceto y el ID concide con el del comienzo
+
+**Cierra la pestaña de page2. Observa la terminal.**
+
+<img width="387" height="32" alt="image" src="https://github.com/user-attachments/assets/a910cd26-a613-4aef-9a36-e6fb5701f76b" />
+User disconnected - ID: 0VgDVIOUbYXoRRQKAAAD
+sucede lo mismo el usuario se desconecta y el ID coincide
+
+
+
+**Mueve la ventana de page1. Observa la terminal del servidor. ¿Qué evento se registra (win1update o win2update)? ¿Qué datos (Data:) ves?**
+
+<img width="719" height="123" alt="image" src="https://github.com/user-attachments/assets/e5d2f2a2-f14c-497e-9914-fb8f10e07005" />
+
+En la terminal aparece el evento Received win1updatecon, ademas sale los datos de la posición y tamaño de la ventana 
+Received win1update from ID: EQHxQUDmTma4K9jAAAAD Data: { x: 1126, y: 211, width: 1146, height: 1260 }
+
+**Mueve la ventana de page2. Observa la terminal. ¿Qué evento se registra ahora? ¿Qué datos ves?**
+
+<img width="719" height="124" alt="image" src="https://github.com/user-attachments/assets/9b5e1c4b-7344-4fb3-bcb6-36a286d22af2" />
+
+Ahora se registra en win2update y de nuevo muestra la posicion, lo ancho y la altura
+Received win2update from ID: _MTnFI0ULRsLmp1KAAAB Data: { x: 1802, y: 380, width: 1146, height: 1260 }
+
+**Experimento clave: cambia socket.broadcast.emit(‘getdata’, page1); por socket.emit(‘getdata’, page1); (quitando broadcast). Reinicia el servidor, abre ambas páginas. Mueve page1. ¿Se actualiza la visualización en page2? ¿Por qué sí o por qué no? (Pista: ¿A quién le envía el mensaje socket.emit?). Restaura el código a broadcast.emit.**
+
+<img width="566" height="369" alt="image" src="https://github.com/user-attachments/assets/bd793c06-dfb1-46b7-939e-2661127e7221" />
+
+Cuando moví page1, el servidor recibió el evento y lo mostró en consola, pero no se reflejó en page2 porque con socket.emit(...) solo responde al mismo cliente que envía. En cambio, usando socket.broadcast.emit(...) el servidor comparte la información con los demás y así ambas páginas se sincronizan.
+
+**Cambia const port = 3000; a const port = 3001;.**
+
+<img width="363" height="90" alt="image" src="https://github.com/user-attachments/assets/c583a092-990c-4fde-90b7-9931e4e08430" />
+
+**Inicia el servidor. ¿Qué mensaje ves en la consola? ¿En qué puerto dice que está escuchando?**
+Server is listening on http://localhost:3001
+
+
+**Intenta abrir http://localhost:3000/page1. ¿Funciona?
+Intenta abrir http://localhost:3001/page1. ¿Funciona?**
+Ninguno de los 2 funciona 
+
+<img width="1354" height="780" alt="image" src="https://github.com/user-attachments/assets/c28c8b8b-1d5b-4a52-85c8-077a77dbc688" />
+
+**¿Qué aprendiste sobre la variable port y la función listen? Restaura el puerto a 3000.**
+
+
+### Actividad 04
+
+
