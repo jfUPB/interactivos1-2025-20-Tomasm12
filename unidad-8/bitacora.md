@@ -26,9 +26,9 @@ Estos parámetros se envían mediante Socket.IO al servidor, que los transmite a
 
 Desde el micro:bit:
 
-Botón A: cambia el color de los elementos visuales.
+- Botón A: cambia el color de los elementos visuales.
 
-Botón B: cambia el color del fondo.
+- Botón B: cambia el color del fondo.
 
 Agitar: genera ondas en las luces y movimiento en las olas.
 
@@ -272,3 +272,4 @@ while True:
 ---
 
 Nota final propuesta:3.5 / 5.0
+
