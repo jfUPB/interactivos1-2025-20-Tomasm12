@@ -128,6 +128,7 @@ El micro:bit respondió en pruebas locales cuando se especificó correctamente e
 No obstante, no se verificó completamente la integración simultánea (móvil + micro:bit + escritorio) debido a problemas de tiempo y configuración del entorno remoto.
 
 
+<img width="705" height="911" alt="image" src="https://github.com/user-attachments/assets/e389615d-e4bc-4083-bf4a-a7078e2bc081" />
 
 
 a. Servidor 
@@ -272,4 +273,5 @@ while True:
 ---
 
 Nota final propuesta:3.5 / 5.0
+
 
